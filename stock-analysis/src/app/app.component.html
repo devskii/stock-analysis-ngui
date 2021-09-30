@@ -1,3 +1,147 @@
 <h1>Stock Analyzer</h1>
-<input placeholder="Enter ticker symbol" #ticker />
-<button type="submit" (click)="onSubmit(ticker.value)">Analyze</button>
+<h2>Fundamentals</h2>
+
+<h3>Large Market Capitalization</h3>
+Market Cap:
+<input
+  type="radio"
+  id="market-cap-large"
+  name="market-cap"
+  value="large"
+  (click)="setLargeCap(true)"
+/>
+<label for="market-cap-large">large</label>
+<input
+  type="radio"
+  id="market-cap-other"
+  name="market-cap"
+  value="other"
+  (click)="setLargeCap(false)"
+/>
+<label for="market-cap-other">other</label>
+<div *ngIf="goodSize">This is a good size!</div>
+<div *ngIf="!goodSize">This is a bad size.</div>
+
+<h3>Prominent</h3>
+Is this company sized within the top 1/4 of its industry?
+<input
+  type="radio"
+  id="prominent-yes"
+  name="prominent"
+  value="yes"
+  (click)="setProminent(true)"
+/>
+<label for="prominent-yes">yes</label>
+<input
+  type="radio"
+  id="prominent-no"
+  name="prominent"
+  value="no"
+  (click)="setProminent(false)"
+/>
+<label for="prominent-no">no</label>
+<div *ngIf="prominent">
+  Prominent companies are safer investments; they'll likely be around for
+  awhile.
+</div>
+<div *ngIf="!prominent">
+  Companies no one knows about are unsafe investments; they can disappear
+  quietly.
+</div>
+
+<h3>Conservatively Financed</h3>
+
+Debt to Equity Ratio:
+<input
+  type="number"
+  min="0"
+  step="0.01"
+  placeholder="e.g. '0.89'"
+  (input)="setDebtToEquityRatio($event)"
+/>
+
+<h3>Consistent Dividends</h3>
+Has this stock paid a regular dividend for 10+ years?
+<input
+  type="radio"
+  id="dividend-yes"
+  name="dividend"
+  value="yes"
+  (click)="setGoodDividend(true)"
+/>
+<label for="dividend-yes">yes</label>
+<input
+  type="radio"
+  id="dividend-no"
+  name="dividend"
+  value="no"
+  (click)="setGoodDividend(false)"
+/>
+<label for="dividend-no">no</label>
+<div *ngIf="goodDividend">
+  A regular dividend is a guaranteed return on your long-term investment.
+</div>
+<div *ngIf="!goodDividend">
+  Stocks that don't pay regularly are insecure investments; you are just betting
+  on a price increase.
+</div>
+
+<h2>Other Criteria</h2>
+<div>
+  Total Current Assets (millions of $):
+  <input
+    type="number"
+    min="0"
+    placeholder="e.g. '159172'"
+    (input)="setAssets($event)"
+  />
+</div>
+<div>
+  Total Current Liabilities (millions of $):
+  <input
+    type="number"
+    min="0"
+    placeholder="e.g. '96820'"
+    (input)="setLiabilities($event)"
+  />
+</div>
+<div *ngIf="totalCurrentAssets >= 0 && totalCurrentLiabilities > 0">
+  Current Ratio: {{ totalCurrentAssets / totalCurrentLiabilities }}
+  <div
+    *ngIf="
+      totalCurrentAssets / totalCurrentLiabilities >= 1.5 &&
+        totalCurrentAssets / totalCurrentLiabilities <= 3;
+      else unhealthyCurrentRatio
+    "
+  >
+    This is a healthy current ratio!
+  </div>
+  <ng-template #unhealthyCurrentRatio
+    ><div>This is an unhealthy current ratio!</div></ng-template
+  >
+  <p>
+    Note: A healthy current ratio in most scenarios is between 1.5 and 3. This
+    means a company is intelligently managing their balance sheet. Current
+    ratios can vary by industry and should be compared against industry
+    averages. A current ratio lower than 1.5 means the company is in danger of
+    being worth negative $ on paper in the event of an emergency liquidation &
+    debt payout. A current ratio above 3 means the company is probably not
+    leveraging their assets enough.
+  </p>
+</div>
+
+<div>
+  <p>(GAAP Earnings Per Share, Diluted, including extraordinary items):</p>
+  <div>2021 earnings: <input placeholder="e.g. '2.06'" /></div>
+  <div>2020 earnings: <input placeholder="e.g. '2.06'" /></div>
+  <div>2019 earnings: <input placeholder="e.g. '2.06'" /></div>
+  <div>2018 earnings: <input placeholder="e.g. '2.06'" /></div>
+  <div>2017 earnings: <input placeholder="e.g. '2.06'" /></div>
+  <div>2016 earnings: <input placeholder="e.g. '2.06'" /></div>
+  <div>2015 earnings: <input placeholder="e.g. '2.06'" /></div>
+  <div>2014 earnings: <input placeholder="e.g. '2.06'" /></div>
+  <div>2013 earnings: <input placeholder="e.g. '2.06'" /></div>
+  <div>2012 earnings: <input placeholder="e.g. '2.06'" /></div>
+</div>
+
+<div>Market Price ($): <input placeholder="e.g. '30.6B'" /></div>
